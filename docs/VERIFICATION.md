@@ -1,11 +1,13 @@
 # Verification record
 
-Backend checks: 2026-11-02. Final frontend/browser checks: 2026-11-03. Machine: macOS Intel. Exact target: Java 21 (Temurin 21.0.13), Maven Wrapper 3.9.11. The repository initially had no application code beyond a hello-world class. The existing `.idea/workspace.xml` user modification was preserved.
+Backend checks: 2026-11-02 and 2026-11-03. Final frontend/browser checks: 2026-11-03. Machine: macOS Intel. Exact target: Java 21 (Temurin 21.0.13), Maven Wrapper 3.9.11. The repository initially had no application code beyond a hello-world class. The existing `.idea/workspace.xml` user modification was preserved.
 
 ## Executed successfully
 
 - Java compilation and packaged Spring Boot executable JAR; final post-format package build passed on 2026-11-03.
 - `./mvnw verify`: **11 unit tests + 23 integration tests**, zero failures, zero errors, zero skipped tests.
+- `./mvnw -B verify -Dflowlab.test.containers=true`: the same **34 backend tests** passed on 2026-11-03 using Docker Engine 29.9.2 and Testcontainers 1.21.4 with PostgreSQL 16 containers.
+- GitHub Actions [Compose job](https://github.com/Dibya0217/workflow-engine/actions/runs/41616862973/job/125852364381) passed on 2026-11-03: container builds, `docker compose up --build --wait --wait-timeout 300`, and frontend/OpenAPI HTTP checks.
 - Unit coverage: valid/invalid graphs, cycles/disconnected tasks/duplicate names/unknown types, terminal and retry transitions, capped exponential backoff, handler validation and duplicate handler registration.
 - Engine integration coverage (12): real PostgreSQL/Flyway/JPA; nested configuration JSONB round trip; full sequence; reconstructed engine after lost provider result; completed task preserved; stable provider result reused; stale completion rejected; retry deadline persistence; permanent failure/manual retry; pause; cancel; duplicate completion; concurrent claim ownership; immutable versions; concurrent provider idempotency; exhausted leases. Several assertions share a test.
 - Operations integration coverage (4): outbox failure/backoff and stale publisher fencing; expired relay lease; transactional outbox rollback; concurrent schedule ticks and coalesced missed intervals.
@@ -34,10 +36,12 @@ A live local demo uses real PostgreSQL, real handlers and actual API calls. Gene
 
 Screenshots: `docs/screenshots/dashboard.png`, `designer.png`, `execution.png`, `mobile.png`.
 
+## Docker compatibility fix
+
+The initial GitHub backend job failed before integration tests could start: Testcontainers 1.21.3 sent Docker API version 1.32, but the runner required at least 1.40. The Maven property now overrides Spring Boot's Testcontainers default to 1.21.4, which includes the Docker compatibility fix. Local container-backed verification passed with all tests enabled. Frontend and Compose jobs already passed in the original run.
+
 ## Not executed here
 
-- Docker/Compose startup and container builds: Docker is not installed on this workstation. Configuration and Dockerfiles are supplied, and `.github/workflows/ci.yml` includes `docker compose up --build --wait` plus HTTP checks.
-- Testcontainers mode: the native PostgreSQL fallback was used locally; CI explicitly selects Testcontainers on Ubuntu.
 - Production infrastructure, external provider integration, high-load/chaos testing or penetration testing.
 
 Native PostgreSQL uses the actual PostgreSQL binary supplied by the test dependency. It is not H2. Tests reconstruct the engine against durable state; the critical test does not claim to SIGKILL/restart a whole JVM. A whole-process manual scenario is described separately in the recovery runbook.

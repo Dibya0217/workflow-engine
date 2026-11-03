@@ -18,7 +18,7 @@ Repository contained a Java hello-world class and bare Maven descriptor. No proj
 - [x] 9. Kafka commands/results, transactional outbox, duplicates and DLT.
 - [x] 10. React dashboard, workflow designer and live execution history.
 - [x] 11. JWT/roles, observability, schedules and settings.
-- [x] 12. Docker Compose/CI files, runbook, interview guide and available final checks. Docker runtime verification remains pending below.
+- [x] 12. Docker Compose/CI files, runbook, interview guide and final checks, including Docker runtime verification below.
 
 ## Architecture review before implementation
 - One deployable backend, packages by responsibility; domain has no infrastructure dependencies.
@@ -42,7 +42,7 @@ Pure tests for definition graphs/state transitions/backoff. Real PostgreSQL test
 - 2026-11-03: frontend TypeScript/Vite production build and all 6 graph tests passed. Browser creation → validation → save → activation → execution succeeded; validation ran once and payment retried once before completion. Desktop (1440px) and mobile (390px) layouts verified without document overflow.
 - 2026-11-03: screenshots, complete README, recovery runbook, dependency notes and 30-question interview guide delivered.
 
-## Remaining acceptance verification
-- [ ] Run `docker compose up --build --wait` on a machine with Docker, and run the Testcontainers test mode. Docker is absent here; CI includes both checks. Native PostgreSQL/Kafka integration success is not a claim that containers were started.
+## Docker acceptance verification
+- [x] 2026-11-03: GitHub Actions Compose startup/build and HTTP smoke checks passed. Local Testcontainers mode passed all 34 backend tests with Docker Engine 29.9.2 after upgrading Testcontainers to 1.21.4 for current Docker API compatibility. See the verification record for the CI job link and failure diagnosis.
 
 See `docs/VERIFICATION.md` for executed evidence and explicit limits.

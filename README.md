@@ -213,7 +213,6 @@ Screenshots from the local browser verification are kept in [docs/screenshots](d
 - Schedules use intervals (minimum 60 seconds), coalesce missed ticks, and skip inactive definitions. No cron/timezone editor.
 - The console's workflow selector loads at most 100 versions; API lists are paginated. A server-search selector is a future scaling improvement.
 - Single-node Compose services, unencrypted internal broker traffic, no automated archival/retention or DLT replay. Redis is supplied but unused by the engine.
-- Docker Compose could not be executed on the development machine because Docker is unavailable. Its startup job is included in CI; passing local native integration tests is not evidence of a passed Compose deployment.
 
 ## Interview preparation
 
