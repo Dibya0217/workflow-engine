@@ -1,0 +1,16 @@
+flowlab:
+  jwt-secret: test-only-secret-at-least-thirty-two-bytes-long
+  bootstrap-username: ''
+  bootstrap-password: ''
+  scheduler-enabled: false
+  kafka-enabled: false
+  lease-seconds: 30
+spring:
+  datasource:
+    password: ''
+logging:
+  structured:
+    format:
+      console: ''
+  level:
+    root: WARN

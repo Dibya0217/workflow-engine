@@ -1,0 +1,11 @@
+{
+  "name": "order-processing",
+  "version": 1,
+  "description": "Validate orders, process payments, update inventory, and notify customers.",
+  "tasks": [
+    {"name": "validate-order", "type": "VALIDATION", "next": "process-payment", "config": {"requiredFields": ["orderId"]}},
+    {"name": "process-payment", "type": "PAYMENT", "next": "update-inventory", "retryPolicy": {"maxAttempts": 3, "initialDelayMs": 1000, "backoffMultiplier": 2, "maxDelayMs": 30000}, "config": {"failAttempts": 1}},
+    {"name": "update-inventory", "type": "INVENTORY", "next": "send-notification"},
+    {"name": "send-notification", "type": "NOTIFICATION", "next": null}
+  ]
+}
